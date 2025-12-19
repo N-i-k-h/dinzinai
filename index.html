@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dinzin AI</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="google-login.css">
+    <script src="https://accounts.google.com/gsi/client" async defer></script>
+</head>
+
+<body class="sidebar-open" id="body">
+
+    <div class="background-blobs">
+        <div class="blob blob-1"></div>
+        <div class="blob blob-2"></div>
+    </div>
+
+    <!-- Mobile Toggle (Hidden by default, used by JS) -->
+    <button id="menuToggle" class="menu-toggle" style="display:none;">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M3 12h18M3 6h18M3 18h18" />
+        </svg>
+    </button>
+
+    <aside class="sidebar" id="sidebar">
+        <div class="sidebar-brand">Dinzin AI</div>
+        <button class="new-chat-btn-large" id="newChatBtn">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M12 5v14M5 12h14" />
+            </svg>
+            New Chat
+        </button>
+        <div class="sidebar-content">
+            <div class="sidebar-label">Recent</div>
+            <ul class="history-list" id="historyList">
+                <!-- Chat history will be dynamically loaded here -->
+            </ul>
+        </div>
+        <div class="sidebar-footer">
+            <button class="user-info-btn" id="authBtn">
+                <div class="user-avatar" id="authAvatar">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                        <circle cx="12" cy="7" r="4"></circle>
+                    </svg>
+                </div>
+                <div class="user-name" id="authText">Login</div>
+            </button>
+        </div>
+    </aside>
+
+    <!-- Login Modal -->
+    <div id="loginModal" class="modal-overlay hidden">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Unlock the Full Experience</h2>
+                <button class="modal-close" id="closeLoginModal">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <line x1="18" y1="6" x2="6" y2="18"></line>
+                        <line x1="6" y1="6" x2="18" y2="18"></line>
+                    </svg>
+                </button>
+            </div>
+            <div class="login-form">
+                <p>Sign in to access better AI solutions, save your chat history, and more.</p>
+
+                <!-- Google Sign-In Configuration -->
+                <div id="g_id_onload"
+                    data-client_id="741415453654-4r424rfi6vj0htrmnt9dt5qmlpd1r9t9.apps.googleusercontent.com"
+                    data-callback="handleCredentialResponse" data-context="signin" data-ux_mode="popup"
+                    data-login_uri="http://localhost:8000" data-auto_prompt="false">
+                </div>
+
+                <!-- Google Sign-In Button Target -->
+                <div class="g_id_signin" data-type="standard" data-shape="rectangular" data-theme="outline"
+                    data-text="continue_with" data-size="large" data-logo_alignment="left">
+                </div>
+            </div>
+            <div id="loginError" class="error-message hidden"></div>
+        </div>
+    </div>
+
+    <main class="main-wrapper">
+        <div class="chat-interface intro-view" id="mainInterface">
+
+            <div id="chatContainer" class="chat-container">
+                <div class="empty-state">
+                    <h1 class="fade-in-text">Hi, I'm Dinzin AI, here to help you.</h1>
+
+                </div>
+            </div>
+
+            <div class="input-section-wrapper">
+                <form id="aiForm" class="pill-input-container">
+                    <div class="selectors-container">
+                        <!-- Agent/Model Selector -->
+                        <div class="selector-wrapper">
+                            <select id="agentSelect" class="custom-select">
+                                <option value="nex-agi/deepseek-v3.1-nex-n1:free" selected>DeepSeek V3.1 (Free)</option>
+                                <option value="google/gemma-3-27b-it:free">Gemma 3 27B (Free)</option>
+                                <option value="openai/gpt-oss-20b:free">GPT-OSS 20B (Free)</option>
+                                <option value="llama-3.3-70b-versatile">Llama 3.3 (Groq)</option>
+                            </select>
+                            <!-- Custom mobile drop-UP version (built/enabled via JS) -->
+                            <div class="custom-dropdown" data-target-select="agentSelect">
+                                <button type="button" class="custom-dropdown-toggle">
+                                    <span class="custom-dropdown-label">DeepSeek V3.1 (Free)</span>
+                                    <span class="custom-dropdown-arrow">
+                                        <svg width="12" height="12" viewBox="0 0 24 24" fill="none"
+                                            stroke="currentColor" stroke-width="2">
+                                            <path d="M6 15l6-6 6 6" />
+                                        </svg>
+                                    </span>
+                                </button>
+                                <div class="custom-dropdown-menu"></div>
+                            </div>
+                            <svg class="select-arrow" width="12" height="12" viewBox="0 0 24 24" fill="none"
+                                stroke="currentColor" stroke-width="2">
+                                <path d="M6 9l6 6 6-6" />
+                            </svg>
+                        </div>
+
+                        <!-- Mode Selector -->
+                        <div class="selector-wrapper">
+                            <select id="modeSelect" class="custom-select">
+                                <option value="generic_chat">Chat</option>
+                                <option value="summarize">Summarize</option>
+                                <option value="draft_reply">Get Reply</option>
+                                <option value="bullet_points">Bullet Points</option>
+                            </select>
+                            <!-- Custom mobile drop-UP version (built/enabled via JS) -->
+                            <div class="custom-dropdown" data-target-select="modeSelect">
+                                <button type="button" class="custom-dropdown-toggle">
+                                    <span class="custom-dropdown-label">Chat</span>
+                                    <span class="custom-dropdown-arrow">
+                                        <svg width="12" height="12" viewBox="0 0 24 24" fill="none"
+                                            stroke="currentColor" stroke-width="2">
+                                            <path d="M6 15l6-6 6 6" />
+                                        </svg>
+                                    </span>
+                                </button>
+                                <div class="custom-dropdown-menu"></div>
+                            </div>
+                            <svg class="select-arrow" width="12" height="12" viewBox="0 0 24 24" fill="none"
+                                stroke="currentColor" stroke-width="2">
+                                <path d="M6 9l6 6 6-6" />
+                            </svg>
+                        </div>
+                    </div>
+
+                    <textarea id="inputText" name="text" placeholder="Ask anything" rows="1"></textarea>
+
+                    <div class="input-actions-right">
+                        <!-- Mic removed -->
+                        <button type="submit" id="submitBtn" class="send-btn" disabled>
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2">
+                                <path d="M22 2L11 13" />
+                                <polygon points="22 2 15 22 11 13 2 9 22 2" />
+                            </svg>
+                            <div class="loader hidden"></div>
+                        </button>
+                    </div>
+                </form>
+            </div>
+
+            <div id="errorMessage" class="error-message hidden" style="margin-top: 10px;">
+                <span id="errorText">Error</span>
+            </div>
+        </div>
+    </main>
+
+    <script src="script.js"></script>
+</body>
+
+</html>

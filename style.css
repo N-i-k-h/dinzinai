@@ -1,0 +1,966 @@
+:root {
+    --primary-hue: 250;
+    --primary-color: hsl(var(--primary-hue), 80%, 60%);
+    --primary-hover: hsl(var(--primary-hue), 80%, 50%);
+    --bg-dark: hsl(230, 25%, 10%);
+    --surface-dark: hsl(230, 25%, 15%);
+    --text-main: hsl(0, 0%, 100%);
+    --text-muted: hsl(230, 15%, 70%);
+    --border-color: hsl(230, 20%, 25%);
+    --glass-bg: rgba(255, 255, 255, 0.05);
+    --glass-border: rgba(255, 255, 255, 0.1);
+    --radius-lg: 16px;
+    --radius-md: 8px;
+    --shadow-lg: 0 20px 40px rgba(0, 0, 0, 0.4);
+    --sidebar-width: 260px;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    background-color: var(--bg-dark);
+    color: var(--text-main);
+    min-height: 100vh;
+    display: flex;
+    overflow-x: hidden;
+    transition: padding-left 0.3s ease;
+}
+
+/* Menu Toggle */
+.menu-toggle {
+    position: fixed;
+    top: 1rem;
+    left: 1rem;
+    z-index: 200;
+    background: rgba(0, 0, 0, 0.5);
+    border: 1px solid var(--border-color);
+    color: white;
+    padding: 8px;
+    border-radius: 8px;
+    cursor: pointer;
+    backdrop-filter: blur(5px);
+    transition: all 0.2s;
+    display: flex;
+}
+
+.menu-toggle:hover {
+    background: var(--primary-color);
+}
+
+/* Sidebar */
+.sidebar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: var(--sidebar-width);
+    height: 100vh;
+    background: rgba(15, 15, 20, 0.6);
+    /* Glassy dark */
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border-right: 1px solid rgba(255, 255, 255, 0.08);
+    padding: 0.5rem;
+    padding-top: 1rem;
+    display: flex;
+    flex-direction: column;
+    z-index: 1000;
+    transform: translateX(-100%);
+    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: 10px 0 30px rgba(0, 0, 0, 0.3);
+}
+
+.sidebar.open {
+    transform: translateX(0);
+}
+
+/* On Desktop: Sidebar slides in, Main content pushes */
+@media (min-width: 900px) {
+    .sidebar {
+        transform: translateX(0);
+        background: rgba(15, 15, 20, 0.3);
+        /* Slightly more transparent on desktop */
+        box-shadow: none;
+        /* No shadow needed if pushing content */
+        border-right: 1px solid rgba(255, 255, 255, 0.05);
+    }
+
+    /* Remove body padding, use margin on main wrapper for smoother push */
+    body.sidebar-open {
+        padding-left: 0;
+    }
+}
+
+/* Sidebar Brand */
+.sidebar-brand {
+    padding: 1.5rem 1rem 1rem 1rem;
+    font-weight: 700;
+    font-size: 1.2rem;
+    color: #fff;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-bottom: 0.5rem;
+    letter-spacing: -0.02em;
+    background: linear-gradient(to right, #fff, #a5a5a5);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    margin-top: 1rem;
+}
+
+
+
+/* New Chat Button - Premium Style */
+.new-chat-btn-large {
+    width: calc(100% - 1.5rem);
+    margin: 0.5rem auto 1rem auto;
+    /* More bottom margin */
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.8rem 1rem;
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.1) 0%, rgba(255, 255, 255, 0.05) 100%);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 12px;
+    color: white;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-size: 0.9rem;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+}
+
+/* Empty State - Perfect Center */
+.empty-state {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    padding-bottom: 0;
+    /* Removing awkward padding to center properly */
+    height: 100%;
+}
+
+/* Input Wrapper - Bottom positioned but with space */
+.input-section-wrapper {
+    width: 100%;
+    padding: 0 1.5rem 2rem 1.5rem;
+    /* 2rem bottom padding */
+    display: flex;
+    justify-content: center;
+    margin-top: auto;
+    /* Push to bottom */
+}
+
+/* Sidebar Content */
+.sidebar-content {
+    flex: 1;
+    overflow-y: auto;
+    padding: 0 0.5rem;
+    margin-top: 0.5rem;
+}
+
+.sidebar-content::-webkit-scrollbar {
+    width: 4px;
+}
+
+.sidebar-content::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.sidebar-content::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 4px;
+}
+
+.sidebar-label {
+    text-transform: uppercase;
+    font-size: 0.7rem;
+    color: rgba(255, 255, 255, 0.4);
+    letter-spacing: 0.08em;
+    margin-bottom: 0.5rem;
+    font-weight: 600;
+    padding: 0 0.75rem;
+    margin-top: 1rem;
+}
+
+.history-list {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+}
+
+.history-item {
+    padding: 0.75rem 1rem;
+    background: transparent;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.2s;
+    overflow: hidden;
+    border: 1px solid transparent;
+}
+
+.history-item:hover {
+    background: rgba(255, 255, 255, 0.05);
+    border-color: rgba(255, 255, 255, 0.05);
+}
+
+.history-item.active {
+    background: rgba(255, 255, 255, 0.1);
+    border-color: rgba(255, 255, 255, 0.1);
+}
+
+/* Sidebar Footer */
+.sidebar-footer {
+    padding: 1rem;
+    border-top: 1px solid rgba(255, 255, 255, 0.05);
+    background: rgba(0, 0, 0, 0.2);
+    /* Footer slightly darker */
+}
+
+
+
+/* Main Wrapper Logic */
+.main-wrapper {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    padding-left: 0;
+    transition: padding-left 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    position: relative;
+    width: 100%;
+}
+
+@media (min-width: 900px) {
+
+    /* Only on desktop do we push the main wrapper */
+    .main-wrapper {
+        padding-left: var(--sidebar-width);
+    }
+
+    .menu-toggle {
+        display: none !important;
+    }
+}
+
+@media (max-width: 768px) {
+    .chat-interface {
+        padding-bottom: 0;
+    }
+
+    .chat-container {
+        padding: 1rem;
+    }
+
+    .pill-input-container {
+        padding: 0.6rem 0.8rem;
+        flex-wrap: wrap;
+        gap: 0.5rem;
+    }
+
+    .pill-input-container textarea {
+        font-size: 0.95rem;
+        /* Slightly smaller text on mobile */
+        min-width: 150px;
+        /* Ensure input has space */
+    }
+
+    .selectors-container {
+        order: -1;
+        /* Move selectors ABOVE input */
+        width: 100%;
+        justify-content: flex-start;
+        /* Align left */
+        gap: 0.5rem;
+        padding-left: 0;
+        margin-right: 0;
+        margin-bottom: 0.5rem;
+        /* Space below selectors */
+        border-top: none;
+        padding-top: 0;
+    }
+
+    .selector-wrapper {
+        flex: 1;
+    }
+
+    .custom-select {
+        width: 100%;
+        max-width: none;
+        font-size: 0.8rem;
+    }
+
+    /* On mobile: hide native select + arrow, use custom drop-UP menu instead */
+    .selector-wrapper .custom-select {
+        display: none;
+    }
+
+    .selector-wrapper .select-arrow {
+        display: none;
+    }
+
+    .selector-wrapper .custom-dropdown {
+        display: block;
+    }
+
+    .input-actions-right {
+        order: 1;
+        margin-left: auto;
+    }
+
+    .empty-state h1 {
+        font-size: 1.5rem;
+        text-align: center;
+        padding: 0 1rem;
+        line-height: 1.3;
+    }
+}
+
+/* Chat Interface */
+.chat-interface {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    height: 100vh;
+    max-width: 1000px;
+    /* Slightly wider */
+    margin: 0 auto;
+    position: relative;
+    padding-bottom: 2rem;
+}
+
+/* Chat Container */
+.chat-container {
+    flex: 1;
+    overflow-y: auto;
+    padding: 2rem 1rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    scroll-behavior: smooth;
+    scrollbar-width: none;
+    /* Firefox */
+}
+
+.chat-container::-webkit-scrollbar {
+    display: none;
+}
+
+/* Chrome/Safari */
+
+/* Empty State */
+
+
+.fade-in-text {
+    font-size: 2rem;
+    font-weight: 500;
+    color: var(--text-main);
+    opacity: 0;
+    animation: fadeInSlide 0.8s ease-out forwards;
+}
+
+@keyframes fadeInSlide {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Input Wrapper */
+.input-section-wrapper {
+    width: 100%;
+    padding: 0 1.5rem;
+    display: flex;
+    justify-content: center;
+}
+
+/* Pill Input */
+.pill-input-container {
+    background: rgba(40, 40, 45, 0.9);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 28px;
+    display: flex;
+    align-items: flex-end;
+    padding: 0.8rem 1rem;
+    width: 100%;
+    max-width: 768px;
+    position: relative;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+    transition: border-color 0.2s;
+}
+
+.pill-input-container:focus-within {
+    border-color: rgba(255, 255, 255, 0.2);
+}
+
+.pill-input-container textarea {
+    flex: 1;
+    background: transparent;
+    border: none;
+    resize: none;
+    color: var(--text-main);
+    font-size: 1rem;
+    font-family: inherit;
+    line-height: 1.5;
+    max-height: 200px;
+    padding: 4px 10px;
+    scrollbar-width: none;
+    /* No scrollbar */
+}
+
+.pill-input-container textarea::-webkit-scrollbar {
+    display: none;
+}
+
+.pill-input-container textarea:focus {
+    outline: none;
+}
+
+.icon-btn-left,
+.icon-btn {
+    background: transparent;
+    border: none;
+    color: var(--text-muted);
+    cursor: pointer;
+    padding: 5px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: color 0.2s;
+}
+
+/* Mode & Agent Dropdowns */
+.selectors-container {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-right: 0.5rem;
+    padding-left: 0.5rem;
+    flex-shrink: 0;
+}
+
+.selector-wrapper {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+/* Custom drop-UP dropdown (used on mobile instead of native select) */
+.custom-dropdown {
+    display: none;
+    position: relative;
+    width: 100%;
+}
+
+.custom-dropdown-toggle {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    background: transparent;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    color: var(--text-muted);
+    font-family: inherit;
+    font-size: 0.85rem;
+    font-weight: 500;
+    padding: 0.4rem 0.6rem;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.custom-dropdown-toggle:hover,
+.custom-dropdown.open .custom-dropdown-toggle {
+    color: var(--text-main);
+    background: rgba(255, 255, 255, 0.05);
+    border-color: rgba(255, 255, 255, 0.2);
+}
+
+.custom-dropdown-label {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.custom-dropdown-arrow {
+    margin-left: 0.25rem;
+    display: flex;
+    align-items: center;
+}
+
+.custom-dropdown-arrow svg {
+    width: 12px;
+    height: 12px;
+}
+
+.custom-dropdown-menu {
+    position: absolute;
+    bottom: 100%;
+    /* open upwards above the toggle */
+    left: 0;
+    width: 100%;
+    margin-bottom: 4px;
+    background: #2a2a2a;
+    border-radius: 6px;
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.45);
+    max-height: 220px;
+    overflow-y: auto;
+    padding: 4px 0;
+    z-index: 20;
+    display: none;
+}
+
+.custom-dropdown.open .custom-dropdown-menu {
+    display: block;
+}
+
+.custom-dropdown-option {
+    padding: 0.4rem 0.6rem;
+    font-size: 0.85rem;
+    color: #ffffff;
+    cursor: pointer;
+    transition: background 0.15s ease;
+}
+
+.custom-dropdown-option:hover {
+    background: rgba(255, 255, 255, 0.06);
+}
+
+.custom-dropdown-option.selected {
+    background: rgba(255, 255, 255, 0.12);
+}
+
+.custom-select {
+    appearance: none;
+    -webkit-appearance: none;
+    background: transparent;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    color: var(--text-muted);
+    font-family: inherit;
+    font-size: 0.85rem;
+    font-weight: 500;
+    padding: 0.4rem 1.4rem 0.4rem 0.6rem;
+    cursor: pointer;
+    transition: all 0.2s;
+    outline: none;
+    border-radius: 6px;
+    max-width: 140px;
+}
+
+.custom-select:hover {
+    color: var(--text-main);
+    background: rgba(255, 255, 255, 0.05);
+    border-color: rgba(255, 255, 255, 0.2);
+}
+
+.custom-select option {
+    background: #2a2a2a;
+    color: white;
+    padding: 10px;
+}
+
+.select-arrow {
+    position: absolute;
+    right: 0.35rem;
+    pointer-events: none;
+    color: var(--text-muted);
+    width: 12px;
+    height: 12px;
+}
+
+.input-actions-right {
+    display: flex;
+    gap: 0.5rem;
+    align-items: center;
+    padding-bottom: 2px;
+}
+
+.send-btn {
+    background: var(--text-main);
+    color: black;
+    border: none;
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.send-btn:disabled {
+    background: rgba(255, 255, 255, 0.2);
+    /* Muted */
+    cursor: default;
+}
+
+.send-btn:not(:disabled):hover {
+    transform: scale(1.05);
+}
+
+/* Logic for Intro vs Chat */
+.intro-view .input-section-wrapper {
+    /* Flex Parent handles centering */
+}
+
+.intro-view .chat-container {
+    flex: 1;
+    /* Allow it to grow to fill space */
+    width: 100%;
+    overflow: hidden;
+    /* Prevent scrollbar in empty state */
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    /* Vertical center */
+}
+
+.intro-view .empty-state {
+    display: flex;
+}
+
+/* If NOT in intro view (i.e. chatting) */
+.chat-interface:not(.intro-view) {
+    justify-content: flex-end;
+}
+
+.chat-interface:not(.intro-view) .empty-state {
+    display: none;
+}
+
+.chat-interface:not(.intro-view) .input-section-wrapper {
+    padding-bottom: 2rem;
+}
+
+/* Messages */
+.message-bubble {
+    max-width: 85%;
+    padding: 0.5rem 1rem;
+    line-height: 1.6;
+    border-radius: 12px;
+    margin: 4px 0;
+    font-size: 0.95rem;
+}
+
+.message-user {
+    align-self: flex-end;
+    background: rgba(255, 255, 255, 0.1);
+    color: var(--text-main);
+    border-radius: 20px 20px 4px 20px;
+}
+
+.message-ai {
+    align-self: flex-start;
+    color: #dedede;
+}
+
+.loader-dots {
+    margin-left: 5px;
+}
+
+.error-message {
+    color: #ff6b6b;
+    margin-top: 10px;
+    margin-bottom: 1rem;
+}
+
+.hidden {
+    display: none !important;
+}
+
+/* Blob Backgrounds (Preserved) */
+.background-blobs {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
+    overflow: hidden;
+    filter: blur(80px);
+}
+
+.blob {
+    position: absolute;
+    border-radius: 50%;
+    opacity: 0.4;
+    animation: float 20s infinite ease-in-out alternate;
+}
+
+.blob-1 {
+    width: 500px;
+    height: 500px;
+    background: var(--primary-color);
+    top: -100px;
+    left: -100px;
+}
+
+.blob-2 {
+    width: 400px;
+    height: 400px;
+    background: hsl(320, 80%, 60%);
+    bottom: -50px;
+    right: -50px;
+    animation-delay: -5s;
+}
+
+.blob-3 {
+    width: 300px;
+    height: 300px;
+    background: hsl(180, 80%, 50%);
+    bottom: 20%;
+    left: 20%;
+    animation-delay: -10s;
+}
+
+@keyframes float {
+    0% {
+        transform: translate(0, 0) scale(1);
+    }
+
+    100% {
+        transform: translate(30px, 50px) scale(1.1);
+    }
+}
+
+/* Login Modal */
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.7);
+    backdrop-filter: blur(4px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+    animation: fadeIn 0.2s ease;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
+
+.modal-content {
+    background: #1f1f1f;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 12px;
+    width: 90%;
+    max-width: 400px;
+    padding: 0;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+    animation: slideUp 0.3s ease;
+}
+
+@keyframes slideUp {
+    from {
+        transform: translateY(20px);
+        opacity: 0;
+    }
+
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+/* Updated Auth Button in Footer */
+.user-info-btn {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    /* Force row */
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.75rem 1rem;
+    background: transparent;
+    border: 1px solid transparent;
+    color: var(--text-main);
+    border-radius: 12px;
+    cursor: pointer;
+    transition: all 0.2s;
+    text-align: left;
+}
+
+.user-info-btn:hover {
+    background: rgba(255, 255, 255, 0.08);
+    border-color: rgba(255, 255, 255, 0.05);
+}
+
+.user-avatar {
+    width: 36px;
+    height: 36px;
+    min-width: 36px;
+    /* Prevent crushing */
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 600;
+    font-size: 1rem;
+    color: #fff;
+    flex-shrink: 0;
+    overflow: hidden;
+    /* Crop square images */
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+/* Ensure images inside fit perfectly */
+.user-avatar img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.user-avatar.has-initials {
+    background: var(--primary-color);
+    color: white;
+}
+
+.user-avatar svg {
+    width: 20px;
+    height: 20px;
+}
+
+/* Helper to show active logged in state style */
+.user-info-btn.logged-in .user-avatar {
+    border-color: var(--primary-color);
+}
+
+.user-name {
+    font-size: 0.9rem;
+    font-weight: 500;
+    color: rgba(255, 255, 255, 0.9);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    flex: 1;
+}
+
+.modal-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1.5rem;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.modal-header h2 {
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: #fff;
+    margin: 0;
+}
+
+.modal-close {
+    background: transparent;
+    border: none;
+    color: rgba(255, 255, 255, 0.6);
+    cursor: pointer;
+    padding: 0.25rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 4px;
+    transition: all 0.2s;
+}
+
+.modal-close:hover {
+    background: rgba(255, 255, 255, 0.1);
+    color: #fff;
+}
+
+.login-form {
+    padding: 1.5rem;
+}
+
+.form-group {
+    margin-bottom: 1.25rem;
+}
+
+.form-group label {
+    display: block;
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: rgba(255, 255, 255, 0.8);
+    margin-bottom: 0.5rem;
+}
+
+.form-group input {
+    width: 100%;
+    padding: 0.75rem;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 8px;
+    color: #fff;
+    font-size: 0.95rem;
+    font-family: inherit;
+    transition: all 0.2s;
+}
+
+.form-group input:focus {
+    outline: none;
+    border-color: var(--primary-color);
+    background: rgba(255, 255, 255, 0.08);
+}
+
+.form-group input::placeholder {
+    color: rgba(255, 255, 255, 0.4);
+}
+
+.login-submit-btn {
+    width: 100%;
+    padding: 0.75rem;
+    background: var(--primary-color);
+    border: none;
+    border-radius: 8px;
+    color: #fff;
+    font-size: 0.95rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+    font-family: inherit;
+}
+
+.login-submit-btn:hover {
+    background: var(--primary-hover);
+    transform: translateY(-1px);
+}
+
+.login-submit-btn:active {
+    transform: translateY(0);
+}
+
+.login-form .error-message {
+    margin-bottom: 1rem;
+    padding: 0.75rem;
+    background: rgba(255, 107, 107, 0.1);
+    border: 1px solid rgba(255, 107, 107, 0.3);
+    border-radius: 6px;
+    color: #ff6b6b;
+    font-size: 0.875rem;
+}
