@@ -1,62 +1,94 @@
-# Dinzin AI Automation Tool
-> Developer Intern Technical Assignment
+# Dinzin AI 🤖
 
-A simple yet powerful AI automation tool built with **PHP** and **Vanilla JavaScript**. This tool enables users to process text using AI to summarize, generate replies, or convert content into bullet points.
+**Dinzin AI** is a powerful, modern, and responsive AI chat application that aggregates multiple Large Language Models (LLMs) into a single, seamless interface. Built with a lightweight Node.js backend and a glassmorphism-inspired UI, it offers a premium user experience across all devices.
 
-## Features
-- **Frontend**: Clean, modern UI with glassmorphism design (HTML5/CSS3).
-- **Backend**: Robust PHP API Endpoint.
-- **AI Integration**: Connects to OpenAI API (GPT-3.5/4).
-- **Automation Logic**: Context-aware prompt engineering based on user selection.
-- **Bonus Features**:
-  - Loading indicators & animations.
-  - Request logging (`requests.log`).
-  - Input sanitization.
-  - Error handling.
-  - Copy to clipboard functionality.
+![Dinzin AI Interface](https://via.placeholder.com/800x400?text=Dinzin+AI+Preview)
 
-## Setup Instructions
+## ✨ Features
+
+- **Multi-Model Support**: Switch instantly between top-tier AI models:
+  - 🧠 **DeepSeek V3.1**
+  - 💎 **Gemini 1.5 Flash** (Google)
+  - 🦙 **Llama 3.3 70B** (Groq)
+  - 🤖 **GPT-OSS 20B**
+- **Smart Modes**: Choose how you want the AI to respond:
+  - 💬 **Chat**: Standard conversation.
+  - 📝 **Summarize**: Get concise summaries of long texts.
+  - 📧 **Draft Reply**: Generate professional email/text replies.
+  - • **Bullet Points**: Break down complex info into lists.
+- **Persistent Chat History**: Log in to save your conversations to the cloud (MongoDB) and access them from any device.
+- **Google Sign-In**: Secure and fast authentication.
+- **Responsive Design**: Fully optimized for mobile and desktop with a custom "Drop-Up" mobile menu for easy navigation.
+- **Glassmorphism UI**: A sleek, modern aesthetic with animated backgrounds and smooth transitions.
+
+## 🛠️ Tech Stack
+
+- **Frontend**: HTML5, CSS3 (Vanilla), JavaScript (ES6+)
+- **Backend**: Node.js (Native HTTP module)
+- **Database**: MongoDB (Atlas)
+- **AI Providers**: Groq, Google Gemini, OpenRouter, DeepSeek
+
+## 🚀 Getting Started
+
+Follow these instructions to set up the project locally on your machine.
 
 ### Prerequisites
-- A local server environment (e.g., XAMPP, WAMP, or PHP built-in server).
-- An OpenAI API Key.
+
+- [Node.js](https://nodejs.org/) (v14 or higher)
+- [MongoDB Atlas](https://www.mongodb.com/cloud/atlas) Account (or local MongoDB)
+- Git
 
 ### Installation
-1. Clone or download this repository into your server's root directory (e.g., `/htdocs` or `/www`).
-2. Navigate to the project folder.
-3. Open `config.php` and replace the placeholder API key with your actual OpenAI API Key:
-   ```php
-   define('OPENAI_API_KEY', 'sk-...');
-   ```
 
-### Running the Project
-If using the PHP built-in server:
-1. Open a terminal in the project directory.
-2. Run:
-   ```bash
-   php -S localhost:8000
-   ```
-3. Open your browser and go to `http://localhost:8000`.
+1.  **Clone the repository**
+    ```bash
+    git clone https://github.com/N-i-k-h/dinzinai.git
+    cd dinzinai
+    ```
 
-## API Documentation
-The tool uses a single endpoint `api.php` which accepts POST requests.
+2.  **Install dependencies**
+    ```bash
+    npm install
+    ```
 
-**Endpoint**: `POST /api.php`
-**Content-Type**: `application/json`
+3.  **Configure Environment Variables**
+    Create a `.env` file in the root directory and add your keys:
+    ```env
+    PORT=8000
+    MONGO_URI=your_mongodb_connection_string
+    DB_NAME=dinzin_ai
+    
+    # AI Provider Keys
+    GROQ_API_KEY=your_groq_key
+    GEMINI_API_KEY=your_gemini_key
+    DEEPSEEK_API_KEY=your_deepseek_key
+    OPENROUTER_API_KEY=your_openrouter_key
+    ```
 
-**Body:**
-```json
-{
-  "text": "Your text content here...",
-  "action": "summarize" // Options: "summarize", "reply", "bulletbox"
-}
-```
+4.  **Run the Server**
+    ```bash
+    npm start
+    ```
 
-## Structure
-- `index.html`: Main user interface.
-- `style.css`: Custom styling (no frameworks).
-- `script.js`: Frontend logic and API communication.
-- `api.php`: Backend logic and API integration.
-- `config.php`: Configuration settings.
-- `requests.log`: Log of processed requests.
-# dinzinai
+5.  **Open in Browser**
+    Visit `http://localhost:8000` to start chatting!
+
+## 🌐 Deployment (Render)
+
+This project is configured for easy deployment on [Render](https://render.com).
+
+1.  Create a new **Web Service** on Render connected to this repository.
+2.  **Build Command**: `npm install`
+3.  **Start Command**: `node server.js`
+4.  add the **Environment Variables** from your `.env` file to the Render dashboard.
+
+## 🤝 Usage
+
+1.  **Select a Model**: Use the dropdown (bottom-left) to choose the AI model that suits your task.
+2.  **Choose a Mode**: Select "Chat", "Summarize", etc., to tailor the AI's behavior.
+3.  **Chat**: Type your message and hit Enter.
+4.  **Login (Optional)**: Click the avatar icon to log in with Google and save your chat history.
+
+## 📄 License
+
+This project is open-source and available under the [MIT License](LICENSE).
