@@ -39,11 +39,7 @@
 
 Follow these instructions to set up the project locally on your machine.
 
-### Prerequisites
 
-- [Node.js](https://nodejs.org/) (v14 or higher)
-- [MongoDB Atlas](https://www.mongodb.com/cloud/atlas) Account (or local MongoDB)
-- Git
 
 ### Installation
 
