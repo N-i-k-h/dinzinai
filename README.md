@@ -85,3 +85,6 @@ Follow these instructions to set up the project locally on your machine.
 3.  **Chat**: Type your message and hit Enter.
 4.  **Login (Optional)**: Click the avatar icon to log in with Google and save your chat history.
 
+
+## live link
+https://dinzinai-1.onrender.com
