@@ -2,7 +2,7 @@
 
 **Dinzin AI** is a powerful, modern, and responsive AI chat application that aggregates multiple Large Language Models (LLMs) into a single, seamless interface. Built with a lightweight Node.js backend and a glassmorphism-inspired UI, it offers a premium user experience across all devices.
 
-![Dinzin AI Interface](https://via.placeholder.com/800x400?text=Dinzin+AI+Preview)
+
 
 ## ✨ Features
 
