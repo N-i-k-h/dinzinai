@@ -24,9 +24,16 @@
 ## 🛠️ Tech Stack
 
 - **Frontend**: HTML5, CSS3 (Vanilla), JavaScript (ES6+)
-- **Backend**: Node.js (Native HTTP module)
+- **Backend**: Node.js (Primary Server) & PHP (API Endpoint)
 - **Database**: MongoDB (Atlas)
 - **AI Providers**: Groq, Google Gemini, OpenRouter, DeepSeek
+
+## 📸 Screenshots
+
+![Home Screen](./screenshots/home_screen.png)
+*The main chat interface with glassmorphism design.*
+
+
 
 ## 🚀 Getting Started
 
