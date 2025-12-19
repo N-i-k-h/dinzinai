@@ -80,14 +80,7 @@ Follow these instructions to set up the project locally on your machine.
 5.  **Open in Browser**
     Visit `http://localhost:8000` to start chatting!
 
-## 🌐 Deployment (Render)
 
-This project is configured for easy deployment on [Render](https://render.com).
-
-1.  Create a new **Web Service** on Render connected to this repository.
-2.  **Build Command**: `npm install`
-3.  **Start Command**: `node server.js`
-4.  add the **Environment Variables** from your `.env` file to the Render dashboard.
 
 ## 🤝 Usage
 
@@ -96,6 +89,3 @@ This project is configured for easy deployment on [Render](https://render.com).
 3.  **Chat**: Type your message and hit Enter.
 4.  **Login (Optional)**: Click the avatar icon to log in with Google and save your chat history.
 
-## 📄 License
-
-This project is open-source and available under the [MIT License](LICENSE).
